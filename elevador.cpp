@@ -75,26 +75,47 @@ public:
     }
 
     void setFechado(){
-        return this->status01 = FECHADA;
+        this->status01 = FECHADA;
     }
 
     int getOcupacao(){
         return this->ocupacao;
     }
 
+    int getandarAtual(){
+        return this->andarAtual;
+    }
+
 
     bool requisicaoEdelegacao(int x) {
     // Verificar se a posição é válida
     if (x < 0 || x > Nandares) {
-        cout << "Posição inválida. Insira uma posição entre 0 e " << Nandares << ".\n";
+        cout << "Posicao invalida. Insira uma posicao entre 0 e " << Nandares << ".\n";
         cout << "" << endl;
 
         return false;
     }
 
+    if (x == andarAtual){
+        cout << "Voce ja esta na andar requirido" << endl;
+        cout << " " << endl;
+
+        return false;
+    }
+
+
     for (int i = 0; i < Nandares; i++) {
+
+
         if ((x - andarAtual) < andaresPrioritarios[i]) {
-            for (int d = ocupacao; d > i; --d) {
+
+            if (andaresPrioritarios[i-1] == x){
+                cout << "Andar ja requisitado" << endl;
+                cout << " " << endl;
+                return false;
+            }
+
+            for (int d = Nandares; d > i; --d) {
                 andaresPrioritarios[d] = andaresPrioritarios[d - 1];
             }
             andaresPrioritarios[i] = x;
@@ -115,23 +136,55 @@ public:
     };
 
     bool movimentacao (){
+
+        cout << "CHAMANDO MOVIENTACAO" << endl;
+        cout << " " << endl;
+
         if (parametro01->verificacao(relacao01) == true){
+
+           
+            this->status01 = FECHADA;
+            this->status02 = PARADO;
             if (this->status01 == FECHADA && this->status02 == PARADO){
                 
+                
                 string captura;
+                cout << "OCUPACAO: " << this->ocupacao << " " << endl;
+                cout << " " << endl;
                 for (int i = 0; i < ocupacao; i++){
+
+                    if (andaresPrioritarios[i] > Nandares){
+                        cout << "Fora do escopo";
+
+                        for (int i = 0; i < ocupacao; i++){
+                        this->andaresPrioritarios[i] = (Nandares+1);};
+
+                        this->ocupacao = 0;
+                        this->status02 = PARADO;
+                        this->status01 = ABERTA;
+
+                        cout << "Elevador PARADO e porta ABERTA" << endl;
+                        cout << " " << endl;
+                    
+                        return false;
+                    }
                 
                     this->status02 = MOVIMENTANDO_SE;
                     if (andarAtual < andaresPrioritarios[i]){
 
-                        cout << "^ " << andaresPrioritarios[i] << endl;
+                        cout << "^ SUBINDO ^" << andaresPrioritarios[i] << endl;
                         cout << " " << endl;
 
                         this->status02=PARADO;
                         this->status01=ABERTA;
 
+                        cout << "Elevador PARADO e porta ABERTA" << endl;
+                        cout << " " << endl;
+
                         cout << "Digite X para fechar a porta " << endl;
                         cin >> captura;
+
+                        this->andarAtual = andaresPrioritarios[i];
 
                         if (captura == "X" || captura == "x" ){
                             this->status01=FECHADA;
@@ -143,21 +196,36 @@ public:
                             this->status02 = PARADO;
                             this->status01 = ABERTA;
 
+                            cout << "Elevador PARADO e porta ABERTA" << endl;
+                            cout << " " << endl;
+
                             cout << "Saia do elevador" << endl;
+
+                            for (int i = 0; i < ocupacao; i++){
+                            this->andaresPrioritarios[i] = (Nandares+1);
+                            };
+                            this->ocupacao = 0;
+
+                            return false;
                         }
 
                         
                         
                     }
                     else {
-                        cout << "Desçendo " << endl;
+                        cout << "DESCENDO " << andaresPrioritarios[i] << endl;
                         cout << " " << endl;
 
                         this->status02=PARADO;
                         this->status01=ABERTA;
 
+                        cout << "Elevador PARADO e porta ABERTA" << endl;
+                        cout << " " << endl;
+
                         cout << "Digite X para fechar a porta " << endl;
                         cin >> captura;
+
+                        this->andarAtual = andaresPrioritarios[i];
 
                         if (captura == "X" || captura == "x" ){
                             this->status01=FECHADA;
@@ -169,16 +237,32 @@ public:
                             this->status02 = PARADO;
                             this->status01 = ABERTA;
 
+                            cout << "Elevador PARADO e porta ABERTA" << endl;
+                            cout << " " << endl;
+
                             cout << "Saia do elevador" << endl;
+
+                            for (int i = 0; i < ocupacao; i++){
+                            this->andaresPrioritarios[i] = (Nandares+1);
+                            };
+                            this->ocupacao = 0;
+
+                            return false;
                         }
                     } 
-                };     
-            };
-
-            for (int i = 0; i < ocupacao; i++){
+                };
+                for (int i = 0; i < ocupacao; i++){
                 this->andaresPrioritarios[i] = (Nandares+1);
-            };
-            ocupacao = 0;
+                };
+                this->ocupacao = 0;
+                return true;   
+            }
+
+            else{
+                return false;
+            }
+
+           
 
            
              
@@ -187,8 +271,18 @@ public:
             cout << "Falha na seguranca" << endl;
             this->status02  = PARADO;
             this->status01 = ABERTA;
+
+            cout << "Elevador PARADO e porta ABERTA" << endl;
+            cout << " " << endl;
+            
             cout << "A porta esta: " << this->status01 << "e o elevador " << this->status02 << "favor, retirem-se" << endl;
             cout << " " << endl;
+
+            for (int i = 0; i < ocupacao; i++){
+                this->andaresPrioritarios[i] = (Nandares+1);
+            };
+            this->ocupacao = 0;
+
             return false;
         };
 

@@ -16,7 +16,7 @@ using namespace std;
 /*
 
 a) Definir o tipo primitivo na intancia, define o tipo de parametros a serem comparados.
-b) nFisicas Define o numeros de parametros a serem comparados.
+b) nParametros Define o numeros de parametros a serem comparados.
 c) 'arr' presente no construtor vai receber uma lista onde os elementos serão comparados aos atributos 'valores' dos objetos parametroFisico.
 d) relação no metodo verificacao, recebe o tipo de comparação esperada para se fazer entre os 'valores' e os elementos de 'arr'.
 
@@ -27,12 +27,12 @@ class parametro {
 
 private :   
 
-int  nFisicas;
+int  nParametros;
 parametroFisico<T>* FisicaArray;
-T* RespostaFisicas;
+T* ElementosComparativos;
 
 void preenchimento(){ 
-for (int i = 0; i < nFisicas; i++){
+for (int i = 0; i < nParametros; i++){
     string nomeZ;
     T valorZ;
 
@@ -59,12 +59,10 @@ public:
 
 parametro (int nFisicA, T* arr){
 
-    this->nFisicas = nFisicA;
-    FisicaArray = new parametroFisico<T>[nFisicas];
-    RespostaFisicas = arr;
+    this->nParametros = nFisicA;
+    FisicaArray = new parametroFisico<T>[nParametros];
+    ElementosComparativos = arr;
     preenchimento();
-    cout << "PIPOCA COM SAL" << endl;
-
 }
 
 ~parametro() {
@@ -72,16 +70,17 @@ parametro (int nFisicA, T* arr){
 }
 
 bool verificacao (string relacao){
-for (int i = 0; i < nFisicas; i++){
+for (int i = 0; i < nParametros; i++){
 
     if ( (relacao == ">" || relacao == "<")){
     
         if (relacao == ">"){
-            if( RespostaFisicas[i] > FisicaArray[i].getUnidade()){
-              exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+            if( ElementosComparativos[i] > FisicaArray[i].getUnidade()){
+              exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
+              return true;
             }
             else{
-              exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+              exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
               return false;
 
             
@@ -89,11 +88,12 @@ for (int i = 0; i < nFisicas; i++){
         }
 
         else if (relacao == "<"){
-            if(RespostaFisicas[i] < FisicaArray[i].getUnidade()){
-               exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+            if(ElementosComparativos[i] < FisicaArray[i].getUnidade()){
+               exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
+               return true;
             }
             else{
-                 exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+                 exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
                  return false;
                 
             }
@@ -107,23 +107,25 @@ for (int i = 0; i < nFisicas; i++){
 
 
     else if (relacao == "="){
-         if(RespostaFisicas[i] != FisicaArray[i].getUnidade()){
-          exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+         if(ElementosComparativos[i] != FisicaArray[i].getUnidade()){
+          exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
           return false;
         }
         else{
-            exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+            exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
+            return true;
            
         }
     }
 
     else if (relacao == "!="){
-        if(RespostaFisicas[i] == FisicaArray[i].getUnidade()){
-          exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+        if(ElementosComparativos[i] == FisicaArray[i].getUnidade()){
+          exibirMensagem("Falha", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
           return false;
         }
         else{
-            exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), RespostaFisicas[i],relacao);
+            exibirMensagem("Sucesso", FisicaArray[i].getnomeUnidade(), FisicaArray[i].getUnidade(), ElementosComparativos[i],relacao);
+            return true;
           
         }
     }
@@ -133,7 +135,6 @@ for (int i = 0; i < nFisicas; i++){
         return false;
     }
  }
- return true;
  }
 };
 
