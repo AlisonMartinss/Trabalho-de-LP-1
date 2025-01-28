@@ -1,1 +1,1 @@
-# Trabalho-de-LP-1
+# Trabalho de LP-1
